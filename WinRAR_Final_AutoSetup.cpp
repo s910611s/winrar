@@ -1,224 +1,132 @@
-//WinRAR ¦Û°Ê¦w¸Ë¤u¨ã
-//¤£»İ¿é¤Jª©¥»¸¹ª©¥»
+//WinRAR è‡ªå‹•å®‰è£å·¥å…·
+//ä¸éœ€è¼¸å…¥ç‰ˆæœ¬è™Ÿç‰ˆæœ¬
 //ver:2.0
-#include <stdio.h>
-#include <time.h>
-#include <string.h>
-#include <iostream.h>
-#include<windows.h>  //»İ­n¨Ï¥Î¨ì¦¹¼ĞÀYÀÉ
-void SetColor(int f=7,int b=0)  //§ï¦rÅéÃC¦â¨ç¼Æ   SetColor(0x0,0x0);
+#include<stdio.h>
+#include<time.h>
+#include<string.h>
+#include<iostream.h>
+#include<windows.h>//éœ€è¦ä½¿ç”¨åˆ°æ­¤æ¨™é ­æª”
+void SetColor(int f=7,int b=0)//æ”¹å­—é«”é¡è‰²å‡½æ•¸ SetColor(0x0,0x0);
 {
     unsigned short ForeColor=f+16*b;
     HANDLE hCon = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hCon,ForeColor);
 }
-
 int main()
 {
-char setupver[20];strcpy(setupver,"v2.0");
-int cver=0;
-int input;
-char ver[200],veri[5];
-char files[30],filesi[4];
-
-char filei[30];
-char filec[30];
-char filei8[100];
-char filec8[100];
-char msga[10];
+    char codever[] = {"v2.0"};  //ç¨‹å¼ç‰ˆæœ¬è™Ÿ
+    int osver = 0;  //OSä½å…ƒ(64/86)
+    int input;
+    char title[200];
+    char ver[5] = {"5.31"};  //WinRARç‰ˆæœ¬è™Ÿ(5.21)
+    char fver[5] = {"531"};  //æª”æ¡ˆç¢¼(521)
+    char fname[200];
+    sprintf(fname,"WinRAR%s_X%d.exe",fver,osver);  //WinRAR+æª”æ¡ˆç¢¼+_OSä½å…ƒæ•¸.exe(WinRAR521_X64.exe)
+    char frname[200];
+    sprintf(fname,"WinRAR%s_Register_X%d.exe",fver,osver);  //WinRAR+æª”æ¡ˆç¢¼+_Register_X86.exe(WinRAR521_Register_X64.exe)
+    
+//-->æ™‚é–“ 
+time_t t = time(0);
+char tmp[64];
+strftime( tmp, sizeof(tmp), "å•Ÿå‹•æ™‚é–“ï¼š%Y/%m/%d %X %a %z ",localtime(&t) );
+struct tm *localtime(const time_t *timer);
 
 /*
+//æ‰‹å‹•è¼¸å…¥ç‰ˆæœ¬è™Ÿ 
 SetColor(0xf,9); 
-system("mode con cols=50 lines=5");
-sprintf(ver,"title WinRAR %s Final ¦Û°Ê¦w¸Ëµ{§Ç %s",veri,setupver);
-system("cls");
-system(ver);
-printf("½Ğ¿é¤Jª©¥»¸¹(EX:5.21)¡G ");
-gets(veri);//veriª©¥»¸¹ 
-printf("½Ğ¿é¤JÀÉ®×½X¡]EX:WinRAR521->>¿é¤J'521'¡^¡G ");
-gets(filesi);//filesiÀÉ®×½X 
+system("@mode con cols=50 lines=5");
+sprintf(title,"title WinRAR %s Final è‡ªå‹•å®‰è£ç¨‹åº %s",ver,codever); system(title);
+cout<<"è«‹è¼¸å…¥ç‰ˆæœ¬è™Ÿ(EX:5.21)ï¼š "; cin>>ver;
+cout<<"è«‹è¼¸å…¥æª”æ¡ˆç¢¼ï¼ˆEX:WinRAR521->>è¼¸å…¥'521'ï¼‰ï¼š "; cin>>fver;
 */
 
-         //-->®É¶¡ 
-        time_t t = time(0);
-        char tmp[64];
-        strftime( tmp, sizeof(tmp), "±Ò°Ê®É¶¡¡G%Y/%m/%d %X %a %z ",localtime(&t) );
-        struct tm *localtime(const time_t *timer);
+SetColor();
+system("@echo off&@mode con cols=90 lines=25");
+// <--æ­¤ç‚ºç¨‹å¼è¨­å®šå€
 
-/*   ex:  5.21   521
-    setupver -->    WinRAR ¦Û°Ê¦w¸Ë¤u¨ãª©¥»¸¹
-       °õ¦æµ²ªG¡G   v2.0 
-    cver     -->    32  64  ¦ì¤¸  = 86  64 
-    veri     -->    5.21    //ª©¥»¸¹ 
-    ver      -->    sprintf(ver,"title WinRAR %s Final ¦Û°Ê¦w¸Ëµ{§Ç -%s",veri,files);
-       °õ¦æµ²ªG¡G   title WinRAR 5.21 Final ¦Û°Ê¦w¸Ëµ{§Ç -WinRAR
-    filesi   -->    521     //ÀÉ®×½X 
-    files    -->    sprintf(files,"WinRAR%s",filesi);    //files --> WinRAR+ÀÉ®×½X 
-       °õ¦æµ²ªG¡G   WinRAR521
-    filei    -->    sprintf(filei,"%s_%d.exe",files,cver);    //filei --> WinRAR+ÀÉ®×½X+_86.exe
-       °õ¦æµ²ªG¡G   WinRAR521_X86.exe
-       °õ¦æµ²ªG¡G   WinRAR521_X64.exe
-    filei8   -->    sprintf(filei8,"@echo start /wait %s>>%d.bat",filei,cver);
-       °õ¦æµ²ªG¡G   @echo start /wait WinRAR521_86.exe>>86.bat
-       °õ¦æµ²ªG¡G   @echo start /wait WinRAR521_64.exe>>64.bat
-    filec    -->    sprintf(filec,"%s_Register_X%d.exe",files,cver);    //filec => WinRAR+ÀÉ®×½X+_Register_X86.exe
-       °õ¦æµ²ªG¡G   WinRARxxx_Register_X86.exe
-       °õ¦æµ²ªG¡G   WinRARxxx_Register_X64.exe
-    filec8   -->    sprintf(filec8,"@echo start /wait %s>>%d.bat",filec,cver);
-       °õ¦æµ²ªG¡G   @echo start /wait WinRARxxx_Register_X64.exe>>64.bat
-       °õ¦æµ²ªG¡G   @echo start /wait WinRARxxx_Register_X86.exe>>86.bat
-*/
-
-
-strcpy(veri,"5.21");          //³]©wª©¥»¸¹ 
-strcpy(filesi,"521");         //ÀÉ®×½X 
-sprintf(files,"WinRAR%s",filesi);    //files --> WinRAR+ÀÉ®×½X 
-SetColor(); 
-sprintf(ver,"title WinRAR %s Final ¦Û°Ê¦w¸Ëµ{§Ç %s",veri,setupver);
-system("echo off&mode con cols=90 lines=30");
-// <--¦¹¬°µ{¦¡³]©w°Ï
 str:
-system("cls");
-system(ver);
-    SetColor(0xc,0); 
-cout<<""<<endl;
-cout<<"                        ¢~¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢¡"<<endl;
-cout<<"                        ¢u¢w";puts( tmp );
-printf("                        ¢¢¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢£");
-cout<<"                                                                               "<<endl;
-    SetColor(0xf,0); 
-printf("   WinRAR %s Final ¦Û°Ê¦w¸Ëµ{§Ç %s °õ¦æ¤¤......                                 ",veri,setupver);
-cout<<"                                                                               "<<endl;
-    SetColor(0xb,0);
-cout<<"                                                                               "<<endl;
-printf("                ¶}©l¦w¸Ë WinRAR %s Final                          \n",veri);
-cout<<"                                                                               "<<endl;
-        SetColor(0xa,0);
+SetColor();system("cls");
+sprintf(title,"title WinRAR %s Final è‡ªå‹•å®‰è£ç¨‹åº %s",ver,codever); system(title);
+SetColor(0xc,0);/*é»‘åº•ç´…å­—*/
+cout<<"\t\t\t\tâ•­â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â•®"<<endl;
+cout<<"\t\t\t\tâ”œâ”€";  puts(tmp);
+cout<<"\t\t\t\tâ•°â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â•¯\n"<<endl;
+SetColor(0xf,0);/*é»‘åº•ç™½å­—*/printf("  WinRAR %s Final è‡ªå‹•å®‰è£ç¨‹åº %s\n\n",ver,codever);
+SetColor(0xa,0);/*é»‘åº•ç¶ å­—*/cout<<"\t  é¸æ“‡é …ç›®â”€â”€å®‰è£èªªæ˜ï¼šè‹¥é›»è…¦ç‚º 32 ä½å…ƒ å‰‡é¸æ“‡ [1]"<<endl;
+SetColor(0xe,0);/*é»‘åº•é»ƒå­—*/cout<<"\t\tâ”‚";
+SetColor(0xa,0);cout<<"\t\tè‹¥é›»è…¦ç‚º 64 ä½å…ƒ å‰‡é¸æ“‡ [2]"<<endl;
+SetColor(0xe,0);cout<<"\t\tâ”‚\n"<<"\t\tâ”œ";
+SetColor(0xa,0);cout<<"0.æŸ¥çœ‹é›»è…¦ä½å…ƒè³‡è¨Š"<<endl;
+SetColor(0xe,0);cout<<"\t\tâ”‚\n"<<"\t\tâ”œ";
+SetColor(0xa,0);printf("1.å®‰è£ WinRAR %s Final X86.exe\n",ver);
+SetColor(0xe,0);cout<<"\t\tâ”‚\n"<<"\t\tâ”œ";
+SetColor(0xa,0);printf("2.å®‰è£ WinRAR %s Final X64.exe\n",ver);
+SetColor(0xe,0);cout<<"\t\tâ”‚\n"<<"\t\tâ•°";
+SetColor(0xa,0);cout<<"99.WinRARå®˜æ–¹ç¶²ç«™\n\n\n"<<endl;
+SetColor(0xe,0);cout<<" â”¬";
+SetColor(0xa,0);cout<<"è«‹è¼¸å…¥é¸é …ç·¨è™Ÿï¼Œä¸¦æŒ‰ã€Enterã€ã€‚";
+SetColor(0xe,0);cout<<" â•®\t\t";
+SetColor(0xc,7);/*ç°åº•ç´…å­—*/cout<<"è«‹ä»¥ç³»çµ±ç®¡ç†å“¡èº«åˆ†åŸ·è¡Œ "<<endl;
+SetColor(0xe,0);cout<<" â•°â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€è«‹è¼¸å…¥â”´";
+cin>>input;
 
-cout<<"           ¿ï¾Ü¶µ¥Ø¢w¢w¦w¸Ë»¡©ú¡G­Y¹q¸£¬° 32 ¦ì¤¸ «h¿ï¾Ü [1]                   "<<endl;
-SetColor(0xe,0);cout<<"               ¢x";SetColor(0xa,0);
-cout<<"                ­Y¹q¸£¬° 64 ¦ì¤¸ «h¿ï¾Ü [2]                   "<<endl;
-SetColor(0xe,0);cout<<"               ¢x"<<endl;
-cout<<"               ¢u";SetColor(0xa,0);
-printf("0.¬d¬İ¹q¸£¦ì¤¸¸ê°T\n");
-SetColor(0xe,0);cout<<"               ¢x                                                              "<<endl;
-SetColor(0xe,0);cout<<"               ¢u";SetColor(0xa,0);
-printf("1.¦w¸Ë WinRAR %s Final X86.exe   (32¦ì¤¸¹q¸£  °õ¦æ®É¬°ÂÅ¦â\n",veri);
-SetColor(0xe,0);cout<<"               ¢x"<<endl;SetColor(0xa,0);
-SetColor(0xe,0);cout<<"               ¢u";SetColor(0xa,0);
-printf("2.¦w¸Ë WinRAR %s Final X64.exe   (64¦ì¤¸¹q¸£  °õ¦æ®É¬°ºñ¦â\n",veri);
-SetColor(0xe,0);cout<<"               ¢x"<<endl;SetColor(0xa,0);
-SetColor(0xe,0);cout<<"               ¢¢ ";SetColor(0xa,0);
-cout<<"                99.§@ªÌºô¯¸  °õ¦æ®É¬°¶À¦â                                    "<<endl;
-//--------------------------
-cout<<""<<endl;
-SetColor(0xe,0);cout<<" ¢s";
-SetColor(0xa,0);cout<<"½Ğ¿é¤J¿ï¶µ½s¸¹¡A¨Ã«ö¡yEnter¡z¡C";
-SetColor(0xe,0);cout<<" ¢¡";
-cout<<"              ";
-SetColor(0xc,7);cout<<" ½Ğ¥H¨t²ÎºŞ²z­û¨­¤À°õ¦æ "<<endl;
-SetColor(0xe,0);cout<<" ¢¢¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w½Ğ¿é¤J¢r ";
-scanf("%d",&input);
+if(input==0) goto info;
+else if(input==1) goto i32;
+else if(input==2) goto i64;
+else if(input==99) goto web;
+else goto flush;
 
-if(input==0) goto info1;
-if((input==1)||(input==32))goto i32;
-if((input==2)||(input==64))goto i64;
-if(input==99)goto htmrar;
-if((input!=0)||(input!=1)||(input!=2)||(input!=32)||(input!=64)||(input!=99)) goto flush;
-//<--- ¼Ğ¥Ü+¿ï¾Ü 
-
-
-
-info1:
-system("");
-system("@echo off&@echo IF /I '%PROCESSOR_ARCHITECTURE%'=='AMD64' (set arc=64) else set arc=32>info.bat");
-system("@echo SET msg2= %UserName% ¨Ï¥ÎªÌ ¥»¥x¹q¸£¨Ï¥Î '%arc%¦ì¤¸' §@·~¨t²Î¡B%NUMBER_OF_PROCESSORS% ½uµ{CPU>>info.bat");
-system("@echo @color 0e>>info.bat");
-system("@echo mode con cols=80 lines=10>>info.bat");
-system("@echo cls>>info.bat");
-system("@echo @echo.>>info.bat");
-system("@echo @echo.>>info.bat");
-system("@echo @echo %msg2%>>info.bat");
-system("@echo pause>>info.bat");
-system("@echo exit>>info.bat");
-system("@start /wait info.bat");
-system("del /f /s /q info.bat>nul");
+info:
+system("control system");
 goto str;
 
 i32:
-cver=86;
-//SetColor(0xb,9);
-sprintf(filei,"%s_X%d.exe",files,cver);    //filei --> WinRAR+ÀÉ®×½X+_86.exe
-sprintf(filec,"%s_Register_X%d.exe",files,cver);    //filec => WinRAR+ÀÉ®×½X+_Register_X86.exe
-sprintf(filei8,"@echo start /wait %s>>%d.bat",filei,cver);
-sprintf(filec8,"@echo start /wait %s>>%d.bat",filec,cver);
-
-system("@echo @echo off>>86.bat");
-system("@echo color 9b>>86.bat");
-system("@echo @mode con cols=50 lines=10>>86.bat");
-char showins[200];
-sprintf(showins,"@echo echo WinRAR %s Final X%d ¦w¸Ë§@·~¤¤¡A½Ğµy­Ô......>>%d.bat",veri,cver,cver);
-system(showins);
-system(filei8);
-system(filec8);
-system("@echo exit>>86.bat");
-system("@start /wait 86.bat");
-system("del /f /s /q 86.bat>nul");
-printf("\n¦w¸Ë§¹¦¨  ");
-system("pause");
-system("color");
-//SetColor();
+osver=86;
+  FILE *inp;
+  inp = fopen("install.bat","w+");
+  fprintf(inp,"echo off&color 2f&mode con cols=50 lines=10\n");
+  fprintf(inp,"title WinRAR %s Final è‡ªå‹•å®‰è£ç¨‹åº %s åŸ·è¡Œä¸­......\n",ver,codever);
+  fprintf(inp,"echo WinRAR %s Final X%d å®‰è£ä½œæ¥­ä¸­ï¼Œè«‹ç¨å€™......\n",ver,osver);
+  fprintf(inp,"start /wait WinRAR%s_X%d.exe\n",fver,osver);
+  fprintf(inp,"TIMEOUT /t 20\n");
+  fprintf(inp,"regedit /s rarreg.key\n");
+  fprintf(inp,"exit");
+  fclose (inp);
+system("@start /wait install.bat");
+system("del /f /s /q install.bat>nul");
+cout<<"\nå®‰è£å®Œæˆ  ";system("pause");
 goto str;
 
 
 
 i64:
-cver=64;
-//SetColor(0xb,9);
-sprintf(filei,"%s_X%d.exe",files,cver);    //filei --> WinRAR+ÀÉ®×½X+_64.exe
-sprintf(filec,"%s_Register_X%d.exe",files,cver);    //filec => WinRAR+ÀÉ®×½X+_Register_X64.exe
-sprintf(filei8,"@echo start /wait %s>>%d.bat",filei,cver);
-sprintf(filec8,"@echo start /wait %s>>%d.bat",filec,cver);
-
-system("@echo @echo off>>64.bat");
-system("@echo color 2f>>64.bat");
-system("@echo @mode con cols=50 lines=10>>64.bat");
-sprintf(showins,"@echo echo WinRAR %s Final X%d ¦w¸Ë§@·~¤¤¡A½Ğµy­Ô......>>%d.bat",veri,cver,cver);
-system(showins);
-system(filei8);
-system(filec8);
-system("@echo exit>>64.bat");
-system("@start /wait 64.bat");
-system("del /f /s /q 64.bat>nul");
-printf("\n¦w¸Ë§¹¦¨  ");
-system("pause");
-system("color");
-//SetColor();
+osver=64;
+  inp = fopen("install.bat","w+");
+  fprintf(inp,"echo off&color 9b&mode con cols=50 lines=10\n");
+  fprintf(inp,"title WinRAR %s Final è‡ªå‹•å®‰è£ç¨‹åº %s åŸ·è¡Œä¸­......\n",ver,codever);
+  fprintf(inp,"echo WinRAR %s Final X%d å®‰è£ä½œæ¥­ä¸­ï¼Œè«‹ç¨å€™......\n",ver,osver);
+  fprintf(inp,"start /wait WinRAR%s_X%d.exe\n",fver,osver);
+  fprintf(inp,"TIMEOUT /t 20\n");
+  fprintf(inp,"regedit /s rarreg.key\n");
+  fprintf(inp,"exit");
+  fclose (inp); 
+system("@start /wait install.bat");
+system("del /f /s /q install.bat>nul");
+cout<<"\nå®‰è£å®Œæˆ  ";system("pause");
 goto str;
 
 
-htmrar:
-/*       char web[200];
-       sprintf(web,"@echo start http://www.rar.com.tw/>>rarweb.bat");
-       system("@rarweb.bat");
-       system("del /f /s /q rarweb.bat");
-       system(web);
+web:
+system("start http://www.rar.com.tw/");
 goto str;
-*/
-         return 0;
+
 flush:
-      int c;
+int c;
 system("color 5e&cls");
-   for(c=1;c<=25;c++)
-   {
-    printf("¿é¤J¿ù»~¡I½Ğ­«·s¿é¤J..¿é¤J¿ù»~¡I½Ğ­«·s¿é¤J..¿é¤J¿ù»~¡I½Ğ­«·s¿é¤J..¿é¤J¿ù»~¡I½Ğ­«·s¿é¤J..\n\n");
-    c+=1;
-   }
-   c=1;
-    system("pause");SetColor();
-    system("cls");
+for(c=1;c<=25;c++)
+{printf("è¼¸å…¥éŒ¯èª¤ï¼è«‹é‡æ–°è¼¸å…¥..è¼¸å…¥éŒ¯èª¤ï¼è«‹é‡æ–°è¼¸å…¥..è¼¸å…¥éŒ¯èª¤ï¼è«‹é‡æ–°è¼¸å…¥..è¼¸å…¥éŒ¯èª¤ï¼è«‹é‡æ–°è¼¸å…¥..\n\n");c+=1;}
+c=1;
+system("pause");SetColor();
+system("cls");
 goto str;
-
 }
-
-
